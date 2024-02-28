@@ -51,7 +51,13 @@ export const CustomForm = ({ setSelectedMode }) => {
 
     event.preventDefault();
 
-    await addDoc(collection(db, "REGISTROS"), formData);
+    await fetch("/api/create-trip", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(formData),
+    });
 
     setSelectedMode(MODE.SEARCH);
 

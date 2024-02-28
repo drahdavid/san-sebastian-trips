@@ -28,20 +28,8 @@ export const CustomTable = () => {
   const [isLoadingData, setIsLoadingData] = useState(true);
 
   const getDbData = async () => {
-    // let data = [];
-    // const q = query(collection(db, "REGISTROS"));
-
-    // const querySnapshot = await getDocs(q);
-
-    // querySnapshot.forEach((doc) => {
-    //   data.push({ ...doc.data(), id: doc.id });
-    // });
-
     const response = await fetch("/api/trips");
     const data = await response.json();
-
-    console.log("THIS IS THE DATA---");
-    console.log(data);
 
     setData(data);
 
@@ -51,8 +39,6 @@ export const CustomTable = () => {
   useEffect(() => {
     getDbData();
   }, []);
-
-  console.log(data);
 
   return isLoadingData ? (
     <Loader />

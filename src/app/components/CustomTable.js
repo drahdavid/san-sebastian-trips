@@ -7,6 +7,7 @@ import { CustomToolTip } from "./CustomToolTip";
 import { CardMobile } from "./CardMobile";
 
 import { WHATSAPP_LINK } from "../utils/constants";
+import { currencyFormat } from "../utils";
 
 import {
   Box,
@@ -142,7 +143,7 @@ export const CustomTable = () => {
                         component="th"
                         scope="row"
                       >
-                        ${row.precioAsiento}
+                        {currencyFormat(+row.precioAsiento)}
                       </TableCell>
                       <TableCell
                         variant="footer"

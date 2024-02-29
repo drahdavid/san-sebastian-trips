@@ -1,5 +1,7 @@
 import { Card, CardContent, Typography, Grid } from "@mui/material";
 
+import { currencyFormat } from "../utils";
+
 import React from "react";
 
 export const CardMobile = ({ tripData }) => {
@@ -37,7 +39,9 @@ export const CardMobile = ({ tripData }) => {
                   component="span"
                   sx={{ ml: 1 }}
                 >
-                  {key === "precioAsiento" && "$"} {value || "N/A"}
+                  {key === "precioAsiento"
+                    ? currencyFormat(+value) || "N/A"
+                    : value || "N/A"}
                 </Typography>
               </Grid>
             );

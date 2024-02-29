@@ -9,6 +9,7 @@ import SearchIcon from "@mui/icons-material/Search";
 export const CustomGrid = ({ onClick }) => {
   return (
     <CustomGridParentContainer
+      className="PEPARDO"
       sx={{ marginTop: "20px", justifyContent: "center", gap: 20 }}
       container
       spacing={2}
@@ -47,8 +48,9 @@ const CustomGridParentContainer = styled(Grid)(({ theme }) => ({
   gap: 20,
   [theme.breakpoints.down("md")]: {
     gap: 10,
+    justifyContent: "space-around",
     ".MuiButtonBase-root": {
-      width: "100px",
+      width: "150px",
       fontSize: "10px",
     },
   },
@@ -60,6 +62,7 @@ const CustomGridContainer = styled(Grid)(({ theme }) => ({
   textAlign: "center",
   gap: 10,
   [theme.breakpoints.down("md")]: {
+    minWidth: "150px",
     gap: 20,
     display: "flex",
     alignItems: "center",

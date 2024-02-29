@@ -8,13 +8,15 @@ import SearchIcon from "@mui/icons-material/Search";
 
 export const CustomGrid = ({ onClick }) => {
   return (
-    <Grid
+    <CustomGridParentContainer
       sx={{ marginTop: "20px", justifyContent: "center", gap: 20 }}
       container
       spacing={2}
     >
       <CustomGridContainer item xs={4}>
-        <Typography variant="h5">Quiero agregar un Viaje</Typography>
+        <CustomTypography variant="h5">
+          Quiero agregar un Viaje
+        </CustomTypography>
         <Button
           onClick={() => onClick(MODE.ADD)}
           startIcon={<AddIcon />}
@@ -25,7 +27,7 @@ export const CustomGrid = ({ onClick }) => {
         </Button>
       </CustomGridContainer>
       <CustomGridContainer item xs={4}>
-        <Typography variant="h5">Quiero Buscar un Viaje</Typography>
+        <CustomTypography variant="h5">Quiero Buscar un Viaje</CustomTypography>
         <Button
           onClick={() => onClick(MODE.SEARCH)}
           startIcon={<SearchIcon />}
@@ -35,13 +37,41 @@ export const CustomGrid = ({ onClick }) => {
           Buscar Viaje
         </Button>
       </CustomGridContainer>
-    </Grid>
+    </CustomGridParentContainer>
   );
 };
 
-const CustomGridContainer = styled(Grid)(() => ({
+const CustomGridParentContainer = styled(Grid)(({ theme }) => ({
+  marginTop: "20px",
+  justifyContent: "center",
+  gap: 20,
+  [theme.breakpoints.down("md")]: {
+    gap: 10,
+    ".MuiButtonBase-root": {
+      width: "100px",
+      fontSize: "10px",
+    },
+  },
+}));
+
+const CustomGridContainer = styled(Grid)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   textAlign: "center",
   gap: 10,
+  [theme.breakpoints.down("md")]: {
+    gap: 20,
+    display: "flex",
+    alignItems: "center",
+  },
+}));
+
+const CustomTypography = styled(Typography)(({ theme }) => ({
+  fontWeight: "600",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "20px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "18px",
+  },
 }));

@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from "react";
 
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { Captcha } from "./Captcha";
 
 import { DEPARTURE_LOCATIONS } from "../utils/constants";
 import {
@@ -20,21 +19,21 @@ import { MODE } from "../utils/constants";
 export const CustomForm = ({ setSelectedMode }) => {
   const [isSendingData, setIsSendingData] = useState(false);
   const [formData, setFormData] = useState({
-    date: "",
-    leavingFrom: DEPARTURE_LOCATIONS[0],
-    exactDeparture: "",
-    to: "",
-    departureTime: "",
-    seatQuantity: "",
-    seatPrice: "",
-    contactPhone: "",
-    comment: "",
+    fecha: "",
+    saliendoDesde: DEPARTURE_LOCATIONS[0],
+    partidaExacta: "",
+    destino: "",
+    horarioSalida: "",
+    cantidadAsientos: "",
+    precioAsiento: "",
+    telefonoContacto: "",
+    comentarios: "",
   });
 
   const todayDate = new Date().toISOString().split("T")[0];
 
   const areFieldsDefined = useMemo(() => {
-    const { comment, ...mandatoryFields } = formData;
+    const { comentarios, ...mandatoryFields } = formData;
     return Object.values(mandatoryFields).every((value) => value !== "");
   }, [formData]);
 
@@ -75,7 +74,7 @@ export const CustomForm = ({ setSelectedMode }) => {
           <TextField
             label="Fecha"
             type="date"
-            name="date"
+            name="fecha"
             value={formData.date}
             onChange={handleChange}
             fullWidth
@@ -91,8 +90,8 @@ export const CustomForm = ({ setSelectedMode }) => {
           <TextField
             select
             label="Saliendo desde"
-            name="leavingFrom"
-            value={formData.leavingFrom}
+            name="saliendoDesde"
+            value={formData.saliendoDesde}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -105,16 +104,16 @@ export const CustomForm = ({ setSelectedMode }) => {
           </TextField>
           <TextField
             label="Locación de partida exacta"
-            name="exactDeparture"
-            value={formData.exactDeparture}
+            name="partidaExacta"
+            value={formData.partidaExacta}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Destino"
-            name="to"
-            value={formData.to}
+            name="destino"
+            value={formData.destino}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -122,8 +121,8 @@ export const CustomForm = ({ setSelectedMode }) => {
           <TextField
             label="Horario de salida"
             type="time"
-            name="departureTime"
-            value={formData.departureTime}
+            name="horarioSalida"
+            value={formData.horarioSalida}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -134,8 +133,8 @@ export const CustomForm = ({ setSelectedMode }) => {
           <TextField
             label="Cantidad de Asientos"
             type="number"
-            name="seatQuantity"
-            value={formData.seatQuantity}
+            name="cantidadAsientos"
+            value={formData.cantidadAsientos}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -143,8 +142,8 @@ export const CustomForm = ({ setSelectedMode }) => {
           <TextField
             label="Precio por Asiento"
             type="number"
-            name="seatPrice"
-            value={formData.seatPrice}
+            name="precioAsiento"
+            value={formData.precioAsiento}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -157,16 +156,16 @@ export const CustomForm = ({ setSelectedMode }) => {
           <TextField
             label="Teléfono de contacto"
             type="tel"
-            name="contactPhone"
-            value={formData.contactPhone}
+            name="telefonoContacto"
+            value={formData.telefonoContacto}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Comentarios adicionales (opcional)"
-            name="comment"
-            value={formData.comment}
+            name="comentarios"
+            value={formData.comentarios}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -187,6 +186,8 @@ export const CustomForm = ({ setSelectedMode }) => {
               "Enviar"
             )}
           </Button>
+
+          <Captcha />
         </CustomGridForm>
       </form>
     </Container>

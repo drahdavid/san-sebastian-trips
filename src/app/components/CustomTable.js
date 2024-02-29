@@ -1,13 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useIsMobile } from "../hooks/useIsMobile";
 
-import { Loader } from "../components/Loader";
-import { CustomToolTip } from "../components/CustomToolTip";
+import { Loader } from "./Loader";
+import { CustomToolTip } from "./CustomToolTip";
+import { CardMobile } from "./CardMobile";
 
 import { WHATSAPP_LINK } from "../utils/constants";
-
-import { collection, query, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
 
 import {
   Box,
@@ -26,6 +25,7 @@ import Link from "next/link";
 export const CustomTable = () => {
   const [data, setData] = useState([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
+  const isMobile = useIsMobile();
 
   const getDbData = async () => {
     const response = await fetch("/api/trips");
@@ -43,132 +43,131 @@ export const CustomTable = () => {
   return isLoadingData ? (
     <Loader />
   ) : (
-    <Box
-      sx={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        marginTop: "50px",
-      }}
-    >
-      <CustomTableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead sx={{ background: "#2d2d2d" }}>
-            <TableRow>
-              <TableCell variant="head" align="center">
-                Fecha
-              </TableCell>
-              <TableCell variant="head" align="center">
-                Saliendo Desde
-              </TableCell>
-              <TableCell variant="head" align="center">
-                Salida Precisa
-              </TableCell>
-              <TableCell variant="head" align="center">
-                Destino
-              </TableCell>
-              <TableCell variant="head" align="center">
-                Horario
-              </TableCell>
-              <TableCell variant="head" align="center">
-                Asientos
-              </TableCell>
-              <TableCell variant="head" align="center">
-                Costo por asiento
-              </TableCell>
-              <TableCell variant="head" align="center">
-                Teléfono
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data
-              .sort((a, b) => new Date(a.date) - new Date(b.date))
-              .map((row) => {
-                const splittedDate = row.date.split("-");
-                const formattedDate = `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`;
-                return (
-                  <TableRow
-                    key={row.id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell
-                      variant="footer"
-                      align="center"
-                      component="th"
-                      scope="row"
+    <CustomBox>
+      {isMobile ? (
+        data.map((data) => <CardMobile key={data.id} tripData={data} />)
+      ) : (
+        <CustomTableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead sx={{ background: "#2d2d2d" }}>
+              <TableRow>
+                <TableCell variant="head" align="center">
+                  Fecha
+                </TableCell>
+                <TableCell variant="head" align="center">
+                  Saliendo Desde
+                </TableCell>
+                <TableCell variant="head" align="center">
+                  Salida Precisa
+                </TableCell>
+                <TableCell variant="head" align="center">
+                  Destino
+                </TableCell>
+                <TableCell variant="head" align="center">
+                  Horario
+                </TableCell>
+                <TableCell variant="head" align="center">
+                  Asientos
+                </TableCell>
+                <TableCell variant="head" align="center">
+                  Costo por asiento
+                </TableCell>
+                <TableCell variant="head" align="center">
+                  Teléfono
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data
+                .sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
+                .map((row) => {
+                  const splittedDate = row.fecha?.split("-");
+                  const formattedDate = `${splittedDate?.[2]}-${splittedDate?.[1]}-${splittedDate?.[0]}`;
+                  return (
+                    <TableRow
+                      key={row.id}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
-                      {formattedDate}
-                    </TableCell>
-                    <TableCell
-                      variant="footer"
-                      align="center"
-                      component="th"
-                      scope="row"
-                    >
-                      {row.leavingFrom}
-                    </TableCell>
-                    <TableCell
-                      variant="footer"
-                      align="center"
-                      component="th"
-                      scope="row"
-                    >
-                      {row.exactDeparture}
-                    </TableCell>
-                    <TableCell
-                      variant="footer"
-                      align="center"
-                      component="th"
-                      scope="row"
-                    >
-                      {row.to}
-                    </TableCell>
-                    <TableCell
-                      variant="footer"
-                      align="center"
-                      component="th"
-                      scope="row"
-                    >
-                      {row.departureTime} hs
-                    </TableCell>
-                    <TableCell
-                      variant="footer"
-                      align="center"
-                      component="th"
-                      scope="row"
-                    >
-                      {row.seatQuantity}
-                    </TableCell>
-                    <TableCell
-                      variant="footer"
-                      align="center"
-                      component="th"
-                      scope="row"
-                    >
-                      ${row.seatPrice}
-                    </TableCell>
-                    <TableCell
-                      variant="footer"
-                      align="center"
-                      component="th"
-                      scope="row"
-                    >
-                      <CustomLink
-                        target="_blank"
-                        href={`${WHATSAPP_LINK}${row.contactPhone}`}
+                      <TableCell
+                        variant="footer"
+                        align="center"
+                        component="th"
+                        scope="row"
                       >
-                        +54 9 {row.contactPhone}
-                      </CustomLink>
-                      {row.comment && <CustomizedToolTip title={row.comment} />}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </CustomTableContainer>
-    </Box>
+                        {formattedDate}
+                      </TableCell>
+                      <TableCell
+                        variant="footer"
+                        align="center"
+                        component="th"
+                        scope="row"
+                      >
+                        {row.saliendoDesde}
+                      </TableCell>
+                      <TableCell
+                        variant="footer"
+                        align="center"
+                        component="th"
+                        scope="row"
+                      >
+                        {row.partidaExacta}
+                      </TableCell>
+                      <TableCell
+                        variant="footer"
+                        align="center"
+                        component="th"
+                        scope="row"
+                      >
+                        {row.destino}
+                      </TableCell>
+                      <TableCell
+                        variant="footer"
+                        align="center"
+                        component="th"
+                        scope="row"
+                      >
+                        {row.horarioSalida} hs
+                      </TableCell>
+                      <TableCell
+                        variant="footer"
+                        align="center"
+                        component="th"
+                        scope="row"
+                      >
+                        {row.cantidadAsientos}
+                      </TableCell>
+                      <TableCell
+                        variant="footer"
+                        align="center"
+                        component="th"
+                        scope="row"
+                      >
+                        ${row.precioAsiento}
+                      </TableCell>
+                      <TableCell
+                        variant="footer"
+                        align="center"
+                        component="th"
+                        scope="row"
+                      >
+                        <CustomLink
+                          target="_blank"
+                          href={`${WHATSAPP_LINK}${row.telefonoContacto}`}
+                        >
+                          +54 9 {row.telefonoContacto}
+                        </CustomLink>
+                        {row.comentarios && (
+                          <CustomizedToolTip title={row.comentarios} />
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </CustomTableContainer>
+      )}
+    </CustomBox>
   );
 };
 
@@ -197,4 +196,17 @@ const CustomizedToolTip = styled(CustomToolTip)(() => ({
   color: "white",
   position: "relative",
   left: "1vw",
+}));
+
+const CustomBox = styled(Box)(({ theme }) => ({
+  width: "100%",
+  display: "flex",
+  justifyContent: "center",
+  marginTop: "50px",
+  marginBottom: "50px",
+  [theme.breakpoints.down("md")]: {
+    marginTop: 0,
+    display: "flex",
+    flexDirection: "column",
+  },
 }));

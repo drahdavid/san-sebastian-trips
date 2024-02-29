@@ -18,6 +18,7 @@ import { MODE } from "../utils/constants";
 
 export const CustomForm = ({ setSelectedMode }) => {
   const [isSendingData, setIsSendingData] = useState(false);
+  const [captcha, setCaptcha] = useState(null);
   const [formData, setFormData] = useState({
     fecha: "",
     saliendoDesde: DEPARTURE_LOCATIONS[0],
@@ -173,12 +174,19 @@ export const CustomForm = ({ setSelectedMode }) => {
             rows={4}
           />
 
+          <Captcha setCaptcha={setCaptcha} />
+
           <Button
             type="submit"
             variant="contained"
             color="info"
             style={{ marginTop: "50px", height: "50px" }}
-            disabled={!areFieldsDefined || isSendingData}
+            disabled={
+              !areFieldsDefined ||
+              isSendingData ||
+              !captcha ||
+              captcha?.length < 20
+            }
           >
             {isSendingData ? (
               <CircularProgress thickness={2} size={30} />
@@ -186,8 +194,6 @@ export const CustomForm = ({ setSelectedMode }) => {
               "Enviar"
             )}
           </Button>
-
-          <Captcha />
         </CustomGridForm>
       </form>
     </Container>

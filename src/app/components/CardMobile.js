@@ -1,8 +1,10 @@
 import { Card, CardContent, Typography, Grid } from "@mui/material";
 
+import { WHATSAPP_LINK } from "../utils/constants";
 import { currencyFormat } from "../utils";
 
 import React from "react";
+import Link from "next/link";
 
 export const CardMobile = ({ tripData }) => {
   return (
@@ -19,7 +21,10 @@ export const CardMobile = ({ tripData }) => {
         </Typography>
         <Grid container spacing={2}>
           {Object.entries(tripData).map(([key, value]) => {
-            if (key === "id") return;
+            if (key === "id") return null;
+            const formattedKey =
+              key.charAt(0).toUpperCase() +
+              key.slice(1).replace(/([A-Z])/g, " $1");
             return (
               <Grid item xs={12} key={key}>
                 <Typography
@@ -28,21 +33,37 @@ export const CardMobile = ({ tripData }) => {
                   component="span"
                   sx={{ fontWeight: "bold" }}
                 >
-                  {key.charAt(0).toUpperCase() +
-                    key.slice(1).replace(/([A-Z])/g, " $1")}
-                  :
+                  {formattedKey}:
                 </Typography>
-                <Typography
-                  fontSize={12}
-                  variant="body2"
-                  color="text.secondary"
-                  component="span"
-                  sx={{ ml: 1 }}
-                >
-                  {key === "precioAsiento"
-                    ? currencyFormat(+value) || "N/A"
-                    : value || "N/A"}
-                </Typography>
+                {key === "telefonoContacto" ? (
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    href={`${WHATSAPP_LINK}${value}`}
+                    target="_blank"
+                  >
+                    <Typography
+                      fontSize={12}
+                      variant="body2"
+                      color="text.secondary"
+                      component="span"
+                      sx={{ ml: 1, cursor: "pointer", color: "black" }}
+                    >
+                      {`+54 9 ${value}` || "N/A"}
+                    </Typography>
+                  </Link>
+                ) : (
+                  <Typography
+                    fontSize={12}
+                    variant="body2"
+                    color="text.secondary"
+                    component="span"
+                    sx={{ ml: 1 }}
+                  >
+                    {key === "precioAsiento"
+                      ? currencyFormat(+value) || "N/A"
+                      : value || "N/A"}
+                  </Typography>
+                )}
               </Grid>
             );
           })}

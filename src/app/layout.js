@@ -1,5 +1,7 @@
 import "./global.css";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 import { ThemeRegistry } from "./components/ThemeRegistry";
 
 import { NavBar } from "./components/NavBar";
@@ -19,6 +21,8 @@ export default function RootLayout({ children }) {
           {children}
         </body>
       </ThemeRegistry>
+
+      <GoogleAnalytics gaId="G-HFLY03QFLR" />
     </html>
   );
 }

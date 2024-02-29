@@ -56,22 +56,22 @@ export const CustomTable = () => {
                   Fecha
                 </TableCell>
                 <TableCell variant="head" align="center">
+                  Horario
+                </TableCell>
+                <TableCell variant="head" align="center">
                   Saliendo Desde
                 </TableCell>
                 <TableCell variant="head" align="center">
-                  Salida Precisa
+                  Partida Precisa
                 </TableCell>
                 <TableCell variant="head" align="center">
                   Destino
                 </TableCell>
                 <TableCell variant="head" align="center">
-                  Horario
+                  Asientos Disponibles
                 </TableCell>
                 <TableCell variant="head" align="center">
-                  Asientos
-                </TableCell>
-                <TableCell variant="head" align="center">
-                  Costo por asiento
+                  Precio por asiento
                 </TableCell>
                 <TableCell variant="head" align="center">
                   Teléfono
@@ -103,6 +103,14 @@ export const CustomTable = () => {
                         component="th"
                         scope="row"
                       >
+                        {row.horarioSalida} hs
+                      </TableCell>
+                      <TableCell
+                        variant="footer"
+                        align="center"
+                        component="th"
+                        scope="row"
+                      >
                         {row.saliendoDesde}
                       </TableCell>
                       <TableCell
@@ -121,14 +129,7 @@ export const CustomTable = () => {
                       >
                         {row.destino}
                       </TableCell>
-                      <TableCell
-                        variant="footer"
-                        align="center"
-                        component="th"
-                        scope="row"
-                      >
-                        {row.horarioSalida} hs
-                      </TableCell>
+
                       <TableCell
                         variant="footer"
                         align="center"

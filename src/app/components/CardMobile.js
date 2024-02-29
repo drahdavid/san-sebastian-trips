@@ -1,12 +1,26 @@
-import { Card, CardContent, Typography, Grid } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
 
 import { WHATSAPP_LINK } from "../utils/constants";
 import { currencyFormat } from "../utils";
-
-import React from "react";
-import Link from "next/link";
+// Assume WHATSAPP_LINK and currencyFormat are defined elsewhere in your code.
 
 export const CardMobile = ({ tripData }) => {
+  const fieldOrder = [
+    "fecha",
+    "horarioSalida",
+    "saliendoDesde",
+    "partidaExacta",
+    "destino",
+    "cantidadAsientos",
+    "precioAsiento",
+    "telefonoContacto",
+    "comentarios",
+  ];
+
   return (
     <Card
       sx={{
@@ -20,8 +34,9 @@ export const CardMobile = ({ tripData }) => {
           Detalles de Viaje
         </Typography>
         <Grid container spacing={2}>
-          {Object.entries(tripData).map(([key, value]) => {
-            if (key === "id") return null;
+          {fieldOrder.map((key) => {
+            if (key === "id" || !tripData.hasOwnProperty(key)) return null;
+            const value = tripData[key];
             const formattedKey =
               key.charAt(0).toUpperCase() +
               key.slice(1).replace(/([A-Z])/g, " $1");

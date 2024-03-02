@@ -5,6 +5,7 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import { Loader } from "./Loader";
 import { CustomToolTip } from "./CustomToolTip";
 import { CardMobile } from "./CardMobile";
+import { NoData } from "./NoData";
 
 import { WHATSAPP_LINK } from "../utils/constants";
 import { currencyFormat } from "../utils";
@@ -23,8 +24,7 @@ import {
 
 import Link from "next/link";
 
-export const CustomTable = () => {
-  const [data, setData] = useState([]);
+export const CustomTable = ({ setData, data }) => {
   const [isLoadingData, setIsLoadingData] = useState(true);
   const isMobile = useIsMobile();
 
@@ -43,6 +43,8 @@ export const CustomTable = () => {
 
   return isLoadingData ? (
     <Loader />
+  ) : !data.length ? (
+    <NoData />
   ) : (
     <CustomBox>
       {isMobile ? (
@@ -79,92 +81,98 @@ export const CustomTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data
-                .sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
-                .map((row) => {
-                  const splittedDate = row.fecha?.split("-");
-                  const formattedDate = `${splittedDate?.[2]}-${splittedDate?.[1]}-${splittedDate?.[0]}`;
-                  return (
-                    <TableRow
-                      key={row.id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell
-                        variant="footer"
-                        align="center"
-                        component="th"
-                        scope="row"
+              {!data.length ? (
+                <div>No se encontraron resultados</div>
+              ) : (
+                data
+                  .sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
+                  .map((row) => {
+                    const splittedDate = row.fecha?.split("-");
+                    const formattedDate = `${splittedDate?.[2]}-${splittedDate?.[1]}-${splittedDate?.[0]}`;
+                    return (
+                      <TableRow
+                        key={row.id}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
                       >
-                        {formattedDate}
-                      </TableCell>
-                      <TableCell
-                        variant="footer"
-                        align="center"
-                        component="th"
-                        scope="row"
-                      >
-                        {row.horarioSalida} hs
-                      </TableCell>
-                      <TableCell
-                        variant="footer"
-                        align="center"
-                        component="th"
-                        scope="row"
-                      >
-                        {row.saliendoDesde}
-                      </TableCell>
-                      <TableCell
-                        variant="footer"
-                        align="center"
-                        component="th"
-                        scope="row"
-                      >
-                        {row.partidaExacta}
-                      </TableCell>
-                      <TableCell
-                        variant="footer"
-                        align="center"
-                        component="th"
-                        scope="row"
-                      >
-                        {row.destino}
-                      </TableCell>
-
-                      <TableCell
-                        variant="footer"
-                        align="center"
-                        component="th"
-                        scope="row"
-                      >
-                        {row.cantidadAsientos}
-                      </TableCell>
-                      <TableCell
-                        variant="footer"
-                        align="center"
-                        component="th"
-                        scope="row"
-                      >
-                        {currencyFormat(+row.precioAsiento)}
-                      </TableCell>
-                      <TableCell
-                        variant="footer"
-                        align="center"
-                        component="th"
-                        scope="row"
-                      >
-                        <CustomLink
-                          target="_blank"
-                          href={`${WHATSAPP_LINK}${row.telefonoContacto}`}
+                        <TableCell
+                          variant="footer"
+                          align="center"
+                          component="th"
+                          scope="row"
                         >
-                          +54 9 {row.telefonoContacto}
-                        </CustomLink>
-                        {row.comentarios && (
-                          <CustomizedToolTip title={row.comentarios} />
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                          {formattedDate}
+                        </TableCell>
+                        <TableCell
+                          variant="footer"
+                          align="center"
+                          component="th"
+                          scope="row"
+                        >
+                          {row.horarioSalida} hs
+                        </TableCell>
+                        <TableCell
+                          variant="footer"
+                          align="center"
+                          component="th"
+                          scope="row"
+                        >
+                          {row.saliendoDesde}
+                        </TableCell>
+                        <TableCell
+                          variant="footer"
+                          align="center"
+                          component="th"
+                          scope="row"
+                        >
+                          {row.partidaExacta}
+                        </TableCell>
+                        <TableCell
+                          variant="footer"
+                          align="center"
+                          component="th"
+                          scope="row"
+                        >
+                          {row.destino}
+                        </TableCell>
+
+                        <TableCell
+                          variant="footer"
+                          align="center"
+                          component="th"
+                          scope="row"
+                        >
+                          {row.cantidadAsientos}
+                        </TableCell>
+                        <TableCell
+                          variant="footer"
+                          align="center"
+                          component="th"
+                          scope="row"
+                        >
+                          {currencyFormat(+row.precioAsiento)}
+                        </TableCell>
+                        <TableCell
+                          variant="footer"
+                          align="center"
+                          component="th"
+                          scope="row"
+                        >
+                          <CustomLink
+                            target="_blank"
+                            href={`${WHATSAPP_LINK}${row.telefonoContacto}`}
+                          >
+                            +54 9 {row.telefonoContacto}
+                          </CustomLink>
+                          {row.comentarios && (
+                            <CustomizedToolTip title={row.comentarios} />
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+              )}
             </TableBody>
           </Table>
         </CustomTableContainer>

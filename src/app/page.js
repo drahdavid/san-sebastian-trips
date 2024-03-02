@@ -6,7 +6,8 @@ import { MODE } from "./utils/constants";
 
 import { CustomGrid } from "./components/CustomGrid";
 import { CustomForm } from "./components/CustomForm";
-import { CustomTable } from "./components/CustomTable";
+
+import { DataDisplay } from "./modules/DataDisplay";
 
 export default function Home() {
   const [selectedMode, setSelectedMode] = useState(null);
@@ -18,7 +19,7 @@ export default function Home() {
       {MODE.ADD === selectedMode && (
         <CustomForm setSelectedMode={setSelectedMode} />
       )}
-      {MODE.SEARCH === selectedMode && <CustomTable />}
+      {MODE.SEARCH === selectedMode && <DataDisplay />}
     </div>
   );
 }

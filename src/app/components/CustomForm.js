@@ -3,9 +3,10 @@ import React, { useState, useMemo } from "react";
 import { Captcha } from "./Captcha";
 
 import { DEPARTURE_LOCATIONS } from "../utils/constants";
+import { getDayName } from "../utils";
+
 import {
   TextField,
-  MenuItem,
   Button,
   Container,
   Typography,
@@ -17,6 +18,7 @@ import {
 import { MODE } from "../utils/constants";
 
 import { CustomSelect } from "./CustomSelect";
+import { Checkbox } from "./Checkbox";
 
 export const CustomForm = ({ setSelectedMode }) => {
   const [isSendingData, setIsSendingData] = useState(false);
@@ -31,6 +33,7 @@ export const CustomForm = ({ setSelectedMode }) => {
     precioAsiento: "",
     telefonoContacto: "",
     comentarios: "",
+    esRecurrente: false,
   });
 
   const todayDate = new Date().toISOString().split("T")[0];
@@ -66,6 +69,10 @@ export const CustomForm = ({ setSelectedMode }) => {
     setIsSendingData(false);
   };
 
+  const recurrencyDate = formData.esRecurrente
+    ? `(Todos los ${getDayName(formData.fecha)})`
+    : "";
+
   return (
     <Container style={{ marginBottom: "200px" }}>
       <Typography variant="h6" style={{ margin: "20px 0" }}>
@@ -90,6 +97,7 @@ export const CustomForm = ({ setSelectedMode }) => {
               shrink: false,
             }}
           />
+
           <CustomSelect
             select
             label="Saliendo desde"
@@ -101,6 +109,14 @@ export const CustomForm = ({ setSelectedMode }) => {
             data={DEPARTURE_LOCATIONS}
           />
 
+          <CustomCheckbox
+            disabled={formData.fecha ? false : true}
+            onChange={(e) =>
+              setFormData({ ...formData, esRecurrente: e.target.checked })
+            }
+            label={`Es Recurrente ${recurrencyDate}`}
+          />
+
           <TextField
             label="Locación de partida exacta"
             name="partidaExacta"
@@ -109,6 +125,7 @@ export const CustomForm = ({ setSelectedMode }) => {
             fullWidth
             margin="normal"
           />
+
           <TextField
             label="Destino"
             name="destino"
@@ -117,6 +134,7 @@ export const CustomForm = ({ setSelectedMode }) => {
             fullWidth
             margin="normal"
           />
+
           <TextField
             label="Horario de salida"
             type="time"
@@ -129,6 +147,7 @@ export const CustomForm = ({ setSelectedMode }) => {
               shrink: true,
             }}
           />
+
           <TextField
             label="Cantidad de Asientos"
             type="number"
@@ -138,6 +157,7 @@ export const CustomForm = ({ setSelectedMode }) => {
             fullWidth
             margin="normal"
           />
+
           <TextField
             label="Precio por Asiento"
             type="number"
@@ -152,6 +172,7 @@ export const CustomForm = ({ setSelectedMode }) => {
               ),
             }}
           />
+
           <TextField
             label="Teléfono de contacto"
             type="tel"
@@ -161,6 +182,7 @@ export const CustomForm = ({ setSelectedMode }) => {
             fullWidth
             margin="normal"
           />
+
           <TextField
             label="Comentarios adicionales (opcional)"
             name="comentarios"
@@ -206,4 +228,11 @@ const CustomGridForm = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
   },
+}));
+
+export const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
+  margin: "16px 0 8px 0",
+  border: `solid 1px ${theme.palette.grey[400]}`,
+  borderRadius: "4px",
+  height: "55px",
 }));

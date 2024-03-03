@@ -5,7 +5,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import dayjs from "dayjs";
-import "dayjs/locale/es"; // Import the Spanish locale
+import "dayjs/locale/es";
 
 import { TextField } from "@mui/material";
 

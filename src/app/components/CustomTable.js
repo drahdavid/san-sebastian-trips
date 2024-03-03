@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useIsMobile } from "../hooks/useIsMobile";
 
 import { Loader } from "./Loader";
@@ -28,27 +28,33 @@ export const CustomTable = ({ setData, data }) => {
   const [isLoadingData, setIsLoadingData] = useState(true);
   const isMobile = useIsMobile();
 
-  const getDbData = async () => {
+  const getDbData = useCallback(async () => {
     const response = await fetch("/api/trips");
     const data = await response.json();
 
     setData(data);
 
     setIsLoadingData(false);
-  };
+  }, [setData]);
 
   useEffect(() => {
     getDbData();
-  }, []);
+  }, [getDbData]);
+
+  const sortedAndFilteredData = data
+    .filter((item) => new Date(item.fecha) > new Date())
+    .sort((itemA, itemB) => new Date(itemA.fecha) - new Date(itemB.fecha));
 
   return isLoadingData ? (
     <Loader />
-  ) : !data.length ? (
+  ) : !sortedAndFilteredData.length ? (
     <NoData />
   ) : (
     <CustomBox>
       {isMobile ? (
-        data.map((data) => <CardMobile key={data.id} tripData={data} />)
+        sortedAndFilteredData.map((data) => (
+          <CardMobile key={data.id} tripData={data} />
+        ))
       ) : (
         <CustomTableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -81,10 +87,10 @@ export const CustomTable = ({ setData, data }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!data.length ? (
+              {!sortedAndFilteredData.length ? (
                 <div>No se encontraron resultados</div>
               ) : (
-                data
+                sortedAndFilteredData
                   .sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
                   .map((row) => {
                     const splittedDate = row.fecha?.split("-");

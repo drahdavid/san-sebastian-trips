@@ -8,7 +8,7 @@ import { CardMobile } from "./CardMobile";
 import { NoData } from "./NoData";
 
 import { WHATSAPP_LINK } from "../utils/constants";
-import { currencyFormat } from "../utils";
+import { currencyFormat, getDayName } from "../utils";
 
 import {
   Box,
@@ -42,7 +42,7 @@ export const CustomTable = ({ setData, data }) => {
   }, [getDbData]);
 
   const sortedAndFilteredData = data
-    .filter((item) => new Date(item.fecha) > new Date())
+    .filter((item) => new Date(item.fecha) > new Date() || item?.esRecurrente)
     .sort((itemA, itemB) => new Date(itemA.fecha) - new Date(itemB.fecha));
 
   return isLoadingData ? (
@@ -76,7 +76,7 @@ export const CustomTable = ({ setData, data }) => {
                   Destino
                 </TableCell>
                 <TableCell variant="head" align="center">
-                  Asientos Disponibles
+                  Asientos
                 </TableCell>
                 <TableCell variant="head" align="center">
                   Precio por asiento
@@ -108,7 +108,9 @@ export const CustomTable = ({ setData, data }) => {
                           component="th"
                           scope="row"
                         >
-                          {formattedDate}
+                          {row.esRecurrente
+                            ? `Cada: ${getDayName(formattedDate)}`
+                            : formattedDate}
                         </TableCell>
                         <TableCell
                           variant="footer"

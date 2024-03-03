@@ -5,8 +5,7 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 
 import { WHATSAPP_LINK } from "../utils/constants";
-import { currencyFormat } from "../utils";
-// Assume WHATSAPP_LINK and currencyFormat are defined elsewhere in your code.
+import { currencyFormat, getDayName } from "../utils";
 
 export const CardMobile = ({ tripData }) => {
   const fieldOrder = [
@@ -76,6 +75,8 @@ export const CardMobile = ({ tripData }) => {
                   >
                     {key === "precioAsiento"
                       ? currencyFormat(+value) || "N/A"
+                      : key === "fecha" && tripData.esRecurrente
+                      ? `Todos los ${getDayName(value)}`
                       : value || "N/A"}
                   </Typography>
                 )}

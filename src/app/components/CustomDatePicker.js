@@ -9,12 +9,13 @@ import "dayjs/locale/es"; // Import the Spanish locale
 
 import { TextField } from "@mui/material";
 
-export const CustomDatePicker = ({ value, onChange, label }) => {
+export const CustomDatePicker = ({ className, value, onChange, label }) => {
   const minDate = dayjs().startOf("day");
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
       <DatePicker
+        className={className}
         label={label}
         value={value}
         onChange={onChange}

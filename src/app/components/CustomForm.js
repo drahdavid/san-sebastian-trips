@@ -16,6 +16,8 @@ import {
 
 import { MODE } from "../utils/constants";
 
+import { CustomSelect } from "./CustomSelect";
+
 export const CustomForm = ({ setSelectedMode }) => {
   const [isSendingData, setIsSendingData] = useState(false);
   const [captcha, setCaptcha] = useState(null);
@@ -88,7 +90,7 @@ export const CustomForm = ({ setSelectedMode }) => {
               shrink: false,
             }}
           />
-          <TextField
+          <CustomSelect
             select
             label="Saliendo desde"
             name="saliendoDesde"
@@ -96,13 +98,9 @@ export const CustomForm = ({ setSelectedMode }) => {
             onChange={handleChange}
             fullWidth
             margin="normal"
-          >
-            {DEPARTURE_LOCATIONS.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
+            data={DEPARTURE_LOCATIONS}
+          />
+
           <TextField
             label="Locación de partida exacta"
             name="partidaExacta"

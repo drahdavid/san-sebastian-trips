@@ -5,6 +5,7 @@ import { CustomDatePicker } from "./CustomDatePicker";
 import { CustomSelect } from "./CustomSelect";
 
 import { DEPARTURE_LOCATIONS } from "../utils/constants";
+import { getDayName } from "../utils";
 
 import dayjs from "dayjs";
 import "dayjs/locale/es";
@@ -15,11 +16,14 @@ export const Filters = ({ data, setData }) => {
 
   const filterData = useCallback(() => {
     let filtered = data;
+
     if (selectedDate) {
       filtered = filtered.filter(
         (item) =>
           dayjs(item.fecha).format("YYYY-MM-DD") ===
-          dayjs(selectedDate).format("YYYY-MM-DD")
+            dayjs(selectedDate).format("YYYY-MM-DD") ||
+          (item.esRecurrente &&
+            getDayName(item.fecha) === getDayName(selectedDate))
       );
     }
     if (selectedLocation) {

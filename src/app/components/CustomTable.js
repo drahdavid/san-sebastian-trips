@@ -109,7 +109,7 @@ export const CustomTable = ({ setData, data }) => {
                           scope="row"
                         >
                           {row.esRecurrente
-                            ? `Cada: ${getDayName(formattedDate)}`
+                            ? `Cada: ${getDayName(row.fecha)}`
                             : formattedDate}
                         </TableCell>
                         <TableCell

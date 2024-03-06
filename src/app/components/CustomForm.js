@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 
 import { Captcha } from "./Captcha";
 
@@ -25,6 +25,7 @@ export const CustomForm = ({ setSelectedMode }) => {
   const [captcha, setCaptcha] = useState(null);
   const [formData, setFormData] = useState({
     fecha: "",
+    fechaFinal: "",
     saliendoDesde: DEPARTURE_LOCATIONS[0],
     partidaExacta: "",
     destino: "",
@@ -40,6 +41,10 @@ export const CustomForm = ({ setSelectedMode }) => {
 
   const areFieldsDefined = useMemo(() => {
     const { comentarios, ...mandatoryFields } = formData;
+    if (!formData.esRecurrente) {
+      const { comentarios, fechaFinal, ...mandatoryFields } = formData;
+      return mandatoryFields;
+    }
     return Object.values(mandatoryFields).every((value) => value !== "");
   }, [formData]);
 
@@ -73,6 +78,14 @@ export const CustomForm = ({ setSelectedMode }) => {
     ? `(Todos los ${getDayName(formData.fecha)})`
     : "";
 
+  useEffect(() => {
+    !formData.esRecurrente && setFormData({ ...formData, fechaFinal: "" });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.esRecurrente]);
+
+  console.log(formData);
+
   return (
     <Container style={{ marginBottom: "200px" }}>
       <Typography variant="h6" style={{ margin: "20px 0" }}>
@@ -82,10 +95,10 @@ export const CustomForm = ({ setSelectedMode }) => {
       <form onSubmit={handleSubmit}>
         <CustomGridForm>
           <TextField
-            label="Fecha"
+            label={formData.esRecurrente ? "Desde" : "Fecha"}
             type="date"
             name="fecha"
-            value={formData.date}
+            value={formData.fecha}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -115,6 +128,25 @@ export const CustomForm = ({ setSelectedMode }) => {
               setFormData({ ...formData, esRecurrente: e.target.checked })
             }
             label={`Es Recurrente ${recurrencyDate}`}
+          />
+
+          <TextField
+            label="Hasta"
+            type="date"
+            name="fechaFinal"
+            disabled={!formData.esRecurrente}
+            value={formData.fechaFinal}
+            defaultValue={formData.fechaFinal}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              min: todayDate,
+              shrink: false,
+            }}
           />
 
           <TextField

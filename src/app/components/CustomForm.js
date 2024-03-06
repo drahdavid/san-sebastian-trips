@@ -40,11 +40,8 @@ export const CustomForm = ({ setSelectedMode }) => {
   const todayDate = new Date().toISOString().split("T")[0];
 
   const areFieldsDefined = useMemo(() => {
-    const { comentarios, ...mandatoryFields } = formData;
-    if (!formData.esRecurrente) {
-      const { comentarios, fechaFinal, ...mandatoryFields } = formData;
-      return mandatoryFields;
-    }
+    const { comentarios, fechaFinal, ...mandatoryFields } = formData;
+
     return Object.values(mandatoryFields).every((value) => value !== "");
   }, [formData]);
 
@@ -83,8 +80,6 @@ export const CustomForm = ({ setSelectedMode }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.esRecurrente]);
-
-  console.log(formData);
 
   return (
     <Container style={{ marginBottom: "200px" }}>

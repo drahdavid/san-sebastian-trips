@@ -42,7 +42,11 @@ export const CustomTable = ({ setData, data }) => {
   }, [getDbData]);
 
   const sortedAndFilteredData = data
-    .filter((item) => new Date(item.fecha) > new Date() || item?.esRecurrente)
+    .filter(
+      (item) =>
+        new Date(item.fecha) > new Date() ||
+        (item?.esRecurrente && new Date(item.fechaFinal) > new Date())
+    )
     .sort((itemA, itemB) => new Date(itemA.fecha) - new Date(itemB.fecha));
 
   return isLoadingData ? (

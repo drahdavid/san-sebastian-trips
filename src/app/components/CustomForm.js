@@ -126,7 +126,7 @@ export const CustomForm = ({ setSelectedMode }) => {
           />
 
           <TextField
-            label="Hasta"
+            label="Es recurrente hasta"
             type="date"
             name="fechaFinal"
             disabled={!formData.esRecurrente}
